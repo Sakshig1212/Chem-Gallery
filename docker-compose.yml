@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # 1. Database Service (MySQL)
+  db:
+    image: mysql:8.0 # Use an official MySQL image
+    container_name: mysql-db
+    environment:
+      # These environment variables configure the MySQL server
+      MYSQL_ROOT_PASSWORD: test1234 # Change this in production
+      MYSQL_DATABASE: chemical_compounds_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: test1234
+    # Persist data to a volume so data isn't lost when the container is stopped
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # 2. Backend API Service (Node/Express)
+  api:
+    build:
+      context: ./backend # Build using the Dockerfile in the backend-api folder
+    container_name: node-api
+    environment:
+      # Crucial: The hostname for the DB is the Docker Compose service name 'db'
+      DB_HOST: localhost
+      DB_USER: root
+      DB_PASSWORD: test1234
+      DB_NAME: chemical_compounds_db
+      PORT: 3000
+    # Map container port 3000 to host port 3000 for external access
+    ports:
+      - "3000:3000"
+    # Ensure the database is ready before trying to start the API
+    depends_on:
+      - db
+    # Bind mount for development: keeps code in sync without rebuilding
+    volumes:
+      - ./backend/usr/src/app
+      - /usr/src/app/node_modules # Anonymous volume to preserve node_modules
+
+  # 3. Frontend Service (AngularJS/Nginx)
+  frontend:
+    build:
+      context: ./frontend # Build using the Dockerfile in the frontend folder
+    container_name: angular-frontend
+    # Map container port 80 to host port 8080 (to avoid port conflicts)
+    ports:
+      - "4200:80"
+    # Frontend depends on API to start (optional, but good practice)
+    depends_on:
+      - api
+    # Bind mount for development: reflects changes instantly
+    volumes:
+      - ./frontend/usr/share/nginx/html
+
+volumes:
+  db_data: # Define the persistent volume for MySQL
