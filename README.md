@@ -1,7 +1,6 @@
 # 🧪 ChemGallery: A Full-Stack Chemical Compound Explorer
 
 <img width="1892" height="874" alt="image" src="https://github.com/user-attachments/assets/41030530-7d05-4f5f-a4bc-60faad427659" />
-> 🖼️ *Replace the link above with a real screenshot or GIF of your running application.*
 
 ---
 
