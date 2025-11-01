@@ -29,8 +29,6 @@ const Compound = sequelize.define('Compound', {
     defaultValue: false 
   }
 }, {
- 
-
   tableName: 'compounds',      
   timestamps: false            
 });

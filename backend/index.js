@@ -8,7 +8,7 @@ require('./models/compound.model');
 require('./models/user.model');
 
 const compoundRoutes = require('./routes/compound.routes');
-const authRoutes = require('./routes/auth.routes'); // We will use this file
+const authRoutes = require('./routes/auth.routes'); 
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -24,13 +24,13 @@ app.get('/', (req, res) => {
   res.send('Welcome to the Chemical Compounds API!');
 });
 
-sequelize.sync({ alter: true })
+sequelize.sync({})
   .then(() => {
-    console.log('✅ Database synchronized successfully.');
+    console.log('Database synchronized successfully.');
     app.listen(PORT, () => {
-      console.log(`🚀 Server is running on http://localhost:${PORT}`);
+      console.log(`Server is running on http://localhost:${PORT}`);
     });
   })
   .catch(err => {
-    console.error('❌ Unable to sync database:', err);
+    console.error('Unable to sync database:', err);
   });

@@ -9,4 +9,5 @@ router.get('/:id', compoundController.getCompoundById);
 
 router.put('/:id', compoundController.updateCompound);
 
+router.post('/create',compoundController.createCompounds);
 module.exports = router;
